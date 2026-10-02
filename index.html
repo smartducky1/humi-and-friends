@@ -1,93 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HUMI & FRIENDS</title>
-  <meta name="description" content="HUMI & FRIENDS whitelist and art." />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <main id="app">
-    <!-- HOME -->
-    <section class="page home-page active" id="home">
-      <div class="scene"></div>
-      <div class="home-content">
-        <h1>HUMI &amp; FRIENDS</h1>
-        <div class="home-actions">
-          <button class="ui-button" data-page="apply">Apply WL</button>
-          <button class="ui-button" data-page="art">ART</button>
-        </div>
-      </div>
-    </section>
 
-    <!-- APPLY WL -->
-    <section class="page inner-page" id="apply">
-      <div class="scene dimmed"></div>
-      <button class="menu-button" id="applyMenu" aria-label="Open menu">☰</button>
+<main id="app">
 
-      <div class="apply-wrap">
-        <div class="apply-card">
-          <div class="title-pill">APPLY WHITELIST TO BECOME A FRIEND</div>
+  <!-- ================= HOME ================= -->
+  <section id="home" class="page home-page">
+    <div class="hero-bg"></div>
 
-          <form id="wlForm" novalidate>
-            <div class="task-row">
-              <span>Follow X</span>
-              <a href="https://x.com/humifriends" target="_blank" rel="noopener">FOLLOW</a>
-            </div>
+    <h1 class="home-title">HUMI &amp; FRIENDS</h1>
 
-            <div class="task-row">
-              <span>Like &amp; RT Pinned Post</span>
-              <a href="https://x.com/humifriends" target="_blank" rel="noopener">OPEN X</a>
-            </div>
-
-            <div class="task-row">
-              <span>QT pinned post</span>
-              <input id="quoteText" type="text" value="I will be friends with @humifriends" readonly />
-            </div>
-
-            <div class="task-row">
-              <span>Tag 3 friends in pinned post</span>
-              <input id="friends" type="text" placeholder="@friend1 @friend2 @friend3" />
-            </div>
-
-            <div class="task-row">
-              <span>Submit Your EVM</span>
-              <input id="wallet" type="text" placeholder="0x..." autocomplete="off" />
-            </div>
-
-            <button class="send-button" type="submit">SEND</button>
-          </form>
-        </div>
-      </div>
-    </section>
-
-    <!-- ART -->
-    <section class="page inner-page" id="art">
-      <div class="scene dimmed"></div>
-      <button class="menu-button" id="artMenu" aria-label="Open menu">☰</button>
-
-      <div class="art-wrap">
-        <div class="title-pill art-title">ART</div>
-        <div class="art-grid">
-          <div class="art-card"><img src="assets/art-1.jpg" alt="HUMI artwork 1"></div>
-          <div class="art-card"><img src="assets/art-2.jpg" alt="HUMI artwork 2"></div>
-          <div class="art-card"><img src="assets/art-3.jpg" alt="HUMI artwork 3"></div>
-          <div class="art-card"><img src="assets/art-4.jpg" alt="HUMI artwork 4"></div>
-          <div class="art-card"><img src="assets/art-5.jpg" alt="HUMI artwork 5"></div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- SUCCESS POPUP -->
-  <div class="modal-backdrop" id="successModal" aria-hidden="true">
-    <div class="success-modal" role="dialog" aria-modal="true">
-      <p>Your Application to become HUMI's friend is in the Queue.</p>
-      <button id="closeModal">OK</button>
+    <div class="home-buttons">
+      <button id="applyBtn" class="figma-button">Apply WL</button>
+      <button id="artBtn" class="figma-button">ART</button>
     </div>
+  </section>
+
+
+  <!-- ================= APPLY WL ================= -->
+  <section id="apply" class="page inner-page hidden">
+
+    <div class="dark-bg"></div>
+
+    <button id="menuApply" class="hamburger" aria-label="Open menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="apply-title">
+      APPLY WHITELIST TO BECOME A FRIEND
+    </div>
+
+    <form id="applyForm" class="apply-card">
+
+      <div class="task-row">
+        <div class="task-label">
+          Follow X
+        </div>
+
+        <a
+          class="task-action"
+          href="https://x.com/humifriends"
+          target="_blank"
+          rel="noopener"
+        >
+          Follow
+        </a>
+      </div>
+
+
+      <div class="task-row">
+        <div class="task-label">
+          Like &amp; RT Pinned Post
+        </div>
+
+        <a
+          class="task-action"
+          href="https://x.com/humifriends"
+          target="_blank"
+          rel="noopener"
+        >
+          Do it
+        </a>
+      </div>
+
+
+      <div class="task-row quote-row">
+
+        <div class="task-label small-label">
+          <strong>QT pinned post</strong>
+          <span>“I will be friends with @humifriends”</span>
+        </div>
+
+        <input
+          id="quoteLink"
+          type="url"
+          placeholder="Drop link to post"
+        >
+
+      </div>
+
+
+      <div class="task-row">
+
+        <div class="task-label">
+          Tag 3 friends in pinned post
+        </div>
+
+        <input
+          id="tagLink"
+          type="url"
+          placeholder="Drop link to post"
+        >
+
+      </div>
+
+
+      <div class="task-row wallet-row">
+
+        <div class="task-label">
+          Submit Your EVM
+        </div>
+
+        <input
+          id="wallet"
+          type="text"
+          placeholder="0x........"
+          autocomplete="off"
+        >
+
+      </div>
+
+
+      <button
+        class="send-button"
+        type="submit"
+      >
+        SEND
+      </button>
+
+    </form>
+
+  </section>
+
+
+  <!-- ================= ART ================= -->
+  <section id="art" class="page inner-page hidden">
+
+    <div class="dark-bg"></div>
+
+    <button id="menuArt" class="hamburger" aria-label="Open menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="art-title">
+      ART
+    </div>
+
+    <div class="art-grid">
+
+      <div class="art-card">
+        <img src="assets/art-01.png" alt="Humi artwork 1">
+      </div>
+
+      <div class="art-card">
+        <img src="assets/art-02.png" alt="Humi artwork 2">
+      </div>
+
+      <div class="art-card">
+        <img src="assets/art-03.png" alt="Humi artwork 3">
+      </div>
+
+      <div class="art-card">
+        <img src="assets/art-04.png" alt="Humi artwork 4">
+      </div>
+
+      <div class="art-card">
+        <img src="assets/art-05.png" alt="Humi artwork 5">
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= NAVIGATION ================= -->
+  <div id="navOverlay" class="nav-overlay hidden">
+
+    <div class="nav-menu">
+
+      <button data-page="home">
+        HOME
+      </button>
+
+      <button data-page="apply">
+        APPLY WL
+      </button>
+
+      <button data-page="art">
+        ART
+      </button>
+
+    </div>
+
   </div>
 
-  <script src="script.js"></script>
+
+  <!-- ================= SUCCESS POPUP ================= -->
+  <div id="successOverlay" class="success-overlay hidden">
+
+    <div class="success-popup">
+
+      <p>
+        Your Application to become HUMI's friend is in the Queue.
+      </p>
+
+      <button id="closeSuccess">
+        OK
+      </button>
+
+    </div>
+
+  </div>
+
+</main>
+
+<script src="script.js"></script>
+
 </body>
 </html>
