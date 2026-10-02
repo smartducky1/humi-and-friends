@@ -16,12 +16,42 @@ export default async function handler(req, res) {
       });
     }
 
+    let body = req.body;
+
+    /*
+      Vercel may give us the request body
+      as either a string or an object.
+    */
+    if (typeof body === "string") {
+      try {
+        body = JSON.parse(body);
+      } catch (error) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid submission data."
+        });
+      }
+    }
+
+    if (!body || typeof body !== "object") {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid submission data."
+      });
+    }
+
     const response = await fetch(APPS_SCRIPT_URL, {
       method: "POST",
+
       headers: {
         "Content-Type": "text/plain;charset=utf-8"
       },
-      body: JSON.stringify(req.body)
+
+      body: JSON.stringify({
+        quoteLink: String(body.quoteLink || "").trim(),
+        tagLink: String(body.tagLink || "").trim(),
+        wallet: String(body.wallet || "").trim()
+      })
     });
 
     const text = await response.text();
@@ -30,19 +60,21 @@ export default async function handler(req, res) {
 
     try {
       result = JSON.parse(text);
-    } catch {
+    } catch (error) {
       return res.status(500).json({
         success: false,
         error: "Invalid response from Google Apps Script."
       });
     }
 
-    return res.status(response.ok ? 200 : 500).json(result);
+    return res.status(200).json(result);
 
   } catch (error) {
+    console.error("Submission API error:", error);
+
     return res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message || "Server error."
     });
   }
 }
