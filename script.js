@@ -126,8 +126,7 @@ closeSuccess.addEventListener("click", () => {
 
 /* ================= APPLY FORM ================= */
 
-const APPS_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbzAtDB_H8u2ngJVXNM1OO3U_oBjIuexYiEuljRBqsNZreZxwY0_XCVYiY-FuChgO9yJ/exec";
+const APPS_SCRIPT_URL = "/api/submit";
 
 applyForm.addEventListener("submit", async (event) => {
 
