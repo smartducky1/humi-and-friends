@@ -200,7 +200,6 @@ function loadPageFromHash() {
 
 }
 
-
 window.addEventListener(
   "hashchange",
   loadPageFromHash
