@@ -1,68 +1,210 @@
-const pages = document.querySelectorAll(".page");
-const successModal = document.getElementById("successModal");
-const closeModal = document.getElementById("closeModal");
-const wlForm = document.getElementById("wlForm");
+const pages = {
+  home: document.getElementById("home"),
+  apply: document.getElementById("apply"),
+  art: document.getElementById("art")
+};
 
-function showPage(pageId) {
-  pages.forEach(page => page.classList.remove("active"));
-  const page = document.getElementById(pageId);
-  if (page) page.classList.add("active");
-  history.replaceState(null, "", `#${pageId}`);
+const navOverlay = document.getElementById("navOverlay");
+
+const applyBtn = document.getElementById("applyBtn");
+const artBtn = document.getElementById("artBtn");
+
+const menuApply = document.getElementById("menuApply");
+const menuArt = document.getElementById("menuArt");
+
+const successOverlay = document.getElementById("successOverlay");
+const closeSuccess = document.getElementById("closeSuccess");
+
+const applyForm = document.getElementById("applyForm");
+
+
+/* ================= PAGE NAVIGATION ================= */
+
+function showPage(pageName) {
+
+  Object.values(pages).forEach(page => {
+    page.classList.add("hidden");
+  });
+
+  pages[pageName].classList.remove("hidden");
+
+  navOverlay.classList.add("hidden");
+
+  window.scrollTo({
+    top: 0,
+    behavior: "instant"
+  });
+
+  history.replaceState(
+    null,
+    "",
+    `#${pageName}`
+  );
 }
 
-document.querySelectorAll("[data-page]").forEach(button => {
-  button.addEventListener("click", () => showPage(button.dataset.page));
-});
+
+/* ================= OPEN MENU ================= */
 
 function openMenu() {
-  // Navigation stays simple for now. The exact hamburger menu behavior
-  // can be connected to the final UI once its menu design is provided.
-  showPage("home");
+  navOverlay.classList.remove("hidden");
 }
 
-document.getElementById("applyMenu").addEventListener("click", openMenu);
-document.getElementById("artMenu").addEventListener("click", openMenu);
 
-function validEvmWallet(wallet) {
-  return /^0x[a-fA-F0-9]{40}$/.test(wallet.trim());
+/* ================= CLOSE MENU ================= */
+
+function closeMenu() {
+  navOverlay.classList.add("hidden");
 }
 
-wlForm.addEventListener("submit", (event) => {
+
+/* ================= HOME BUTTONS ================= */
+
+applyBtn.addEventListener("click", () => {
+  showPage("apply");
+});
+
+
+artBtn.addEventListener("click", () => {
+  showPage("art");
+});
+
+
+/* ================= HAMBURGER ================= */
+
+menuApply.addEventListener("click", () => {
+  openMenu();
+});
+
+
+menuArt.addEventListener("click", () => {
+  openMenu();
+});
+
+
+/* ================= CLOSE MENU OUTSIDE ================= */
+
+navOverlay.addEventListener("click", (event) => {
+
+  if (event.target === navOverlay) {
+    closeMenu();
+  }
+
+});
+
+
+/* ================= NAV MENU ================= */
+
+document
+  .querySelectorAll(".nav-menu button")
+  .forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      const page = button.dataset.page;
+
+      /*
+        HOME      -> landing page
+        APPLY WL  -> whitelist page
+        ART       -> art page
+      */
+
+      showPage(page);
+
+    });
+
+  });
+
+
+/* ================= SUCCESS POPUP ================= */
+
+closeSuccess.addEventListener("click", () => {
+
+  successOverlay.classList.add("hidden");
+
+});
+
+
+/* ================= APPLY FORM ================= */
+
+applyForm.addEventListener("submit", (event) => {
+
   event.preventDefault();
 
-  const wallet = document.getElementById("wallet").value.trim();
+  const wallet =
+    document
+      .getElementById("wallet")
+      .value
+      .trim();
 
-  if (!validEvmWallet(wallet)) {
-    alert("Please enter a valid EVM wallet address.");
+
+  /* EVM WALLET VALIDATION */
+
+  if (!/^0x[a-fA-F0-9]{40}$/.test(wallet)) {
+
+    alert("Please enter a valid EVM wallet.");
+
     return;
+
   }
 
-  // Frontend-only success state for the initial GitHub/Vercel build.
-  // This is the exact success message requested:
-  successModal.classList.add("open");
-  successModal.setAttribute("aria-hidden", "false");
+
+  /*
+    YOUR GOOGLE APPS SCRIPT SUBMISSION
+    CODE GOES HERE.
+
+    DO NOT REMOVE THE CODE ABOVE.
+
+    After your backend successfully accepts
+    the application, run:
+
+      successOverlay.classList.remove("hidden");
+
+    The popup text is already:
+
+    "Your Application to become HUMI's friend is in the Queue."
+  */
+
+
+  successOverlay.classList.remove("hidden");
+
 });
 
-closeModal.addEventListener("click", () => {
-  successModal.classList.remove("open");
-  successModal.setAttribute("aria-hidden", "true");
-});
 
-successModal.addEventListener("click", (event) => {
-  if (event.target === successModal) {
-    successModal.classList.remove("open");
-    successModal.setAttribute("aria-hidden", "true");
+/* ================= LOAD PAGE FROM URL ================= */
+
+function loadPageFromHash() {
+
+  const hash =
+    window.location.hash
+      .replace("#", "")
+      .toLowerCase();
+
+
+  if (hash === "apply") {
+
+    showPage("apply");
+
   }
-});
 
-function loadRoute() {
-  const route = location.hash.replace("#", "");
-  if (route === "apply" || route === "art") {
-    showPage(route);
-  } else {
+  else if (hash === "art") {
+
+    showPage("art");
+
+  }
+
+  else {
+
     showPage("home");
+
   }
+
 }
 
-window.addEventListener("hashchange", loadRoute);
-loadRoute();
+
+window.addEventListener(
+  "hashchange",
+  loadPageFromHash
+);
+
+
+loadPageFromHash();
