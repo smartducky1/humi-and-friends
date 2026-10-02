@@ -2,75 +2,81 @@ const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbzAtDB_H8u2ngJVXNM1OO3U_oBjIuexYiEuljRBqsNZreZxwY0_XCVYiY-FuChgO9yJ/exec";
 
 
-// ===============================
-// PAGE NAVIGATION
-// ===============================
-
-function showPage(page) {
-  const pages = document.querySelectorAll(".page");
-
-  pages.forEach((section) => {
-    section.classList.remove("active");
-  });
-
-  const target = document.getElementById(page);
-
-  if (target) {
-    target.classList.add("active");
-  }
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
-  history.replaceState(null, "", "#" + page);
-}
-
-
-// ===============================
-// HOME BUTTONS
-// ===============================
-
 document.addEventListener("DOMContentLoaded", function () {
 
-  const applyButton = document.getElementById("applyBtn");
-  const artButton = document.getElementById("artBtn");
+  // =========================
+  // PAGE NAVIGATION
+  // =========================
 
-  if (applyButton) {
-    applyButton.addEventListener("click", function () {
+  function showPage(page) {
+
+    document.querySelectorAll(".page").forEach(function (section) {
+      section.classList.remove("active");
+    });
+
+    const target = document.getElementById(page);
+
+    if (target) {
+      target.classList.add("active");
+    }
+
+    window.scrollTo(0, 0);
+
+    history.replaceState(null, "", "#" + page);
+  }
+
+
+  // =========================
+  // HOME BUTTONS
+  // =========================
+
+  const applyBtn = document.getElementById("applyBtn");
+  const artBtn = document.getElementById("artBtn");
+
+  if (applyBtn) {
+    applyBtn.addEventListener("click", function () {
       showPage("apply");
     });
   }
 
-  if (artButton) {
-    artButton.addEventListener("click", function () {
+  if (artBtn) {
+    artBtn.addEventListener("click", function () {
       showPage("art");
     });
   }
 
 
-  // ===============================
-  // HAMBURGER MENU
-  // ===============================
+  // =========================
+  // HAMBURGER
+  // =========================
 
-  const menuButton = document.querySelector(".hamburger");
-  const navOverlay = document.getElementById("navOverlay");
+  const hamburgerButtons =
+    document.querySelectorAll(".hamburger");
 
-  if (menuButton && navOverlay) {
-    menuButton.addEventListener("click", function () {
-      navOverlay.classList.toggle("hidden");
+  const navOverlay =
+    document.getElementById("navOverlay");
+
+  hamburgerButtons.forEach(function (button) {
+
+    button.addEventListener("click", function () {
+
+      if (navOverlay) {
+        navOverlay.classList.toggle("hidden");
+      }
+
     });
-  }
+
+  });
 
 
-  // ===============================
-  // NAVIGATION LINKS
-  // ===============================
+  // =========================
+  // NAVIGATION MENU
+  // =========================
 
   const navHome = document.getElementById("navHome");
   const navApply = document.getElementById("navApply");
   const navArt = document.getElementById("navArt");
+
 
   if (navHome) {
     navHome.addEventListener("click", function () {
@@ -82,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+
   if (navApply) {
     navApply.addEventListener("click", function () {
       showPage("apply");
@@ -91,6 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
 
   if (navArt) {
     navArt.addEventListener("click", function () {
@@ -103,25 +111,35 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  // ===============================
+  // =========================
   // SUCCESS POPUP
-  // ===============================
+  // =========================
 
-  const successOverlay = document.getElementById("successOverlay");
-  const closeSuccess = document.getElementById("closeSuccess");
+  const successOverlay =
+    document.getElementById("successOverlay");
+
+  const closeSuccess =
+    document.getElementById("closeSuccess");
+
 
   if (closeSuccess && successOverlay) {
+
     closeSuccess.addEventListener("click", function () {
+
       successOverlay.classList.add("hidden");
+
     });
+
   }
 
 
-  // ===============================
+  // =========================
   // WHITELIST FORM
-  // ===============================
+  // =========================
 
-  const whitelistForm = document.getElementById("whitelistForm");
+  const whitelistForm =
+    document.getElementById("whitelistForm");
+
 
   if (whitelistForm) {
 
@@ -130,36 +148,32 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
 
 
-      // Get form inputs
       const quoteInput =
-        document.querySelector('input[name="quoteLink"]') ||
         document.getElementById("quoteLink");
 
       const tagInput =
-        document.querySelector('input[name="tagLink"]') ||
         document.getElementById("tagLink");
 
       const walletInput =
-        document.querySelector('input[name="wallet"]') ||
         document.getElementById("wallet");
 
-
-      const quoteLink = quoteInput
-        ? quoteInput.value.trim()
-        : "";
-
-      const tagLink = tagInput
-        ? tagInput.value.trim()
-        : "";
-
-      const wallet = walletInput
-        ? walletInput.value.trim()
-        : "";
+      const sendButton =
+        document.getElementById("sendBtn");
 
 
-      // ===============================
+      const quoteLink =
+        quoteInput ? quoteInput.value.trim() : "";
+
+      const tagLink =
+        tagInput ? tagInput.value.trim() : "";
+
+      const wallet =
+        walletInput ? walletInput.value.trim() : "";
+
+
+      // =========================
       // WALLET VALIDATION
-      // ===============================
+      // =========================
 
       if (!/^0x[a-fA-F0-9]{40}$/.test(wallet)) {
 
@@ -169,24 +183,22 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
 
-      // ===============================
-      // SUBMIT TO GOOGLE APPS SCRIPT
-      // ===============================
+      // =========================
+      // BUTTON STATE
+      // =========================
 
-      const submitButton =
-        whitelistForm.querySelector('button[type="submit"]') ||
-        document.getElementById("sendBtn");
+      if (sendButton) {
 
+        sendButton.disabled = true;
+        sendButton.textContent = "SENDING...";
 
-      if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.textContent = "SENDING...";
       }
 
 
       try {
 
         const response = await fetch(APPS_SCRIPT_URL, {
+
           method: "POST",
 
           headers: {
@@ -194,36 +206,40 @@ document.addEventListener("DOMContentLoaded", function () {
           },
 
           body: JSON.stringify({
+
             quoteLink: quoteLink,
             tagLink: tagLink,
             wallet: wallet
+
           })
+
         });
 
 
         const result = await response.json();
 
 
-        // ===============================
-        // BACKEND ERROR
-        // ===============================
+        // =========================
+        // BACKEND REJECTED
+        // =========================
 
         if (!result.success) {
 
-          alert(result.error || "Something went wrong.");
-
-          if (submitButton) {
-            submitButton.disabled = false;
-            submitButton.textContent = "SEND";
-          }
+          alert(
+            result.error ||
+            "Something went wrong."
+          );
 
           return;
         }
 
 
-        // ===============================
+        // =========================
         // SUCCESS
-        // ===============================
+        // =========================
+
+        whitelistForm.reset();
+
 
         if (successOverlay) {
 
@@ -238,43 +254,49 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        // Clear form
-        whitelistForm.reset();
-
-
       } catch (error) {
 
-        console.error("Submission error:", error);
+        console.error(error);
 
         alert(
           "Unable to submit your application right now. Please try again."
         );
 
-      }
+      } finally {
 
+        if (sendButton) {
 
-      // Restore button
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.textContent = "SEND";
+          sendButton.disabled = false;
+          sendButton.textContent = "SEND";
+
+        }
+
       }
 
     });
+
   }
 
 
-  // ===============================
-  // LOAD PAGE FROM URL
-  // ===============================
+  // =========================
+  // OPEN PAGE FROM HASH
+  // =========================
 
-  const hash = window.location.hash.replace("#", "");
+  const currentHash =
+    window.location.hash.replace("#", "");
 
-  if (hash === "apply") {
-    showPage("apply");
-  } else if (hash === "art") {
-    showPage("art");
+
+  if (
+    currentHash === "apply" ||
+    currentHash === "art"
+  ) {
+
+    showPage(currentHash);
+
   } else {
+
     showPage("home");
+
   }
 
 });
