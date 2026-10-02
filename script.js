@@ -1,302 +1,209 @@
-const APPS_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbzAtDB_H8u2ngJVXNM1OO3U_oBjIuexYiEuljRBqsNZreZxwY0_XCVYiY-FuChgO9yJ/exec";
+const pages = {
+  home: document.getElementById("home"),
+  apply: document.getElementById("apply"),
+  art: document.getElementById("art")
+};
+
+const navOverlay = document.getElementById("navOverlay");
+
+const applyBtn = document.getElementById("applyBtn");
+const artBtn = document.getElementById("artBtn");
+
+const menuApply = document.getElementById("menuApply");
+const menuArt = document.getElementById("menuArt");
+
+const successOverlay = document.getElementById("successOverlay");
+const closeSuccess = document.getElementById("closeSuccess");
+
+const applyForm = document.getElementById("applyForm");
 
 
-document.addEventListener("DOMContentLoaded", function () {
+/* ================= PAGE NAVIGATION ================= */
 
-  // =========================
-  // PAGE NAVIGATION
-  // =========================
+function showPage(pageName) {
 
-  function showPage(page) {
+  Object.values(pages).forEach(page => {
+    page.classList.add("hidden");
+  });
 
-    document.querySelectorAll(".page").forEach(function (section) {
-      section.classList.remove("active");
-    });
+  pages[pageName].classList.remove("hidden");
 
-    const target = document.getElementById(page);
+  navOverlay.classList.add("hidden");
 
-    if (target) {
-      target.classList.add("active");
-    }
+  window.scrollTo({
+    top: 0,
+    behavior: "instant"
+  });
 
-    window.scrollTo(0, 0);
+  history.replaceState(
+    null,
+    "",
+    `#${pageName}`
+  );
+}
 
-    history.replaceState(null, "", "#" + page);
+
+/* ================= OPEN MENU ================= */
+
+function openMenu() {
+  navOverlay.classList.remove("hidden");
+}
+
+
+/* ================= CLOSE MENU ================= */
+
+function closeMenu() {
+  navOverlay.classList.add("hidden");
+}
+
+
+/* ================= HOME BUTTONS ================= */
+
+applyBtn.addEventListener("click", () => {
+  showPage("apply");
+});
+
+
+artBtn.addEventListener("click", () => {
+  showPage("art");
+});
+
+
+/* ================= HAMBURGER ================= */
+
+menuApply.addEventListener("click", () => {
+  openMenu();
+});
+
+
+menuArt.addEventListener("click", () => {
+  openMenu();
+});
+
+
+/* ================= CLOSE MENU OUTSIDE ================= */
+
+navOverlay.addEventListener("click", (event) => {
+
+  if (event.target === navOverlay) {
+    closeMenu();
   }
 
-
-  // =========================
-  // HOME BUTTONS
-  // =========================
-
-  const applyBtn = document.getElementById("applyBtn");
-  const artBtn = document.getElementById("artBtn");
-
-  if (applyBtn) {
-    applyBtn.addEventListener("click", function () {
-      showPage("apply");
-    });
-  }
-
-  if (artBtn) {
-    artBtn.addEventListener("click", function () {
-      showPage("art");
-    });
-  }
+});
 
 
-  // =========================
-  // HAMBURGER
-  // =========================
+/* ================= NAV MENU ================= */
 
-  const hamburgerButtons =
-    document.querySelectorAll(".hamburger");
+document
+  .querySelectorAll(".nav-menu button")
+  .forEach(button => {
 
-  const navOverlay =
-    document.getElementById("navOverlay");
+    button.addEventListener("click", () => {
 
-  hamburgerButtons.forEach(function (button) {
+      const page = button.dataset.page;
 
-    button.addEventListener("click", function () {
+      /*
+        HOME      -> landing page
+        APPLY WL  -> whitelist page
+        ART       -> art page
+      */
 
-      if (navOverlay) {
-        navOverlay.classList.toggle("hidden");
-      }
+      showPage(page);
 
     });
 
   });
 
 
-  // =========================
-  // NAVIGATION MENU
-  // =========================
+/* ================= SUCCESS POPUP ================= */
 
-  const navHome = document.getElementById("navHome");
-  const navApply = document.getElementById("navApply");
-  const navArt = document.getElementById("navArt");
+closeSuccess.addEventListener("click", () => {
 
+  successOverlay.classList.add("hidden");
 
-  if (navHome) {
-    navHome.addEventListener("click", function () {
-      showPage("home");
-
-      if (navOverlay) {
-        navOverlay.classList.add("hidden");
-      }
-    });
-  }
+});
 
 
-  if (navApply) {
-    navApply.addEventListener("click", function () {
-      showPage("apply");
+/* ================= APPLY FORM ================= */
 
-      if (navOverlay) {
-        navOverlay.classList.add("hidden");
-      }
-    });
-  }
+applyForm.addEventListener("submit", (event) => {
 
+  event.preventDefault();
 
-  if (navArt) {
-    navArt.addEventListener("click", function () {
-      showPage("art");
-
-      if (navOverlay) {
-        navOverlay.classList.add("hidden");
-      }
-    });
-  }
+  const wallet =
+    document
+      .getElementById("wallet")
+      .value
+      .trim();
 
 
-  // =========================
-  // SUCCESS POPUP
-  // =========================
+  /* EVM WALLET VALIDATION */
 
-  const successOverlay =
-    document.getElementById("successOverlay");
+  if (!/^0x[a-fA-F0-9]{40}$/.test(wallet)) {
 
-  const closeSuccess =
-    document.getElementById("closeSuccess");
+    alert("Please enter a valid EVM wallet.");
 
-
-  if (closeSuccess && successOverlay) {
-
-    closeSuccess.addEventListener("click", function () {
-
-      successOverlay.classList.add("hidden");
-
-    });
+    return;
 
   }
 
 
-  // =========================
-  // WHITELIST FORM
-  // =========================
+  /*
+    YOUR GOOGLE APPS SCRIPT SUBMISSION
+    CODE GOES HERE.
 
-  const whitelistForm =
-    document.getElementById("whitelistForm");
+    DO NOT REMOVE THE CODE ABOVE.
 
+    After your backend successfully accepts
+    the application, run:
 
-  if (whitelistForm) {
+      successOverlay.classList.remove("hidden");
 
-    whitelistForm.addEventListener("submit", async function (event) {
+    The popup text is already:
 
-      event.preventDefault();
-
-
-      const quoteInput =
-        document.getElementById("quoteLink");
-
-      const tagInput =
-        document.getElementById("tagLink");
-
-      const walletInput =
-        document.getElementById("wallet");
-
-      const sendButton =
-        document.getElementById("sendBtn");
+    "Your Application to become HUMI's friend is in the Queue."
+  */
 
 
-      const quoteLink =
-        quoteInput ? quoteInput.value.trim() : "";
+  successOverlay.classList.remove("hidden");
 
-      const tagLink =
-        tagInput ? tagInput.value.trim() : "";
-
-      const wallet =
-        walletInput ? walletInput.value.trim() : "";
+});
 
 
-      // =========================
-      // WALLET VALIDATION
-      // =========================
+/* ================= LOAD PAGE FROM URL ================= */
 
-      if (!/^0x[a-fA-F0-9]{40}$/.test(wallet)) {
+function loadPageFromHash() {
 
-        alert("Please enter a valid EVM wallet.");
-
-        return;
-      }
+  const hash =
+    window.location.hash
+      .replace("#", "")
+      .toLowerCase();
 
 
-      // =========================
-      // BUTTON STATE
-      // =========================
+  if (hash === "apply") {
 
-      if (sendButton) {
-
-        sendButton.disabled = true;
-        sendButton.textContent = "SENDING...";
-
-      }
-
-
-      try {
-
-        const response = await fetch(APPS_SCRIPT_URL, {
-
-          method: "POST",
-
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8"
-          },
-
-          body: JSON.stringify({
-
-            quoteLink: quoteLink,
-            tagLink: tagLink,
-            wallet: wallet
-
-          })
-
-        });
-
-
-        const result = await response.json();
-
-
-        // =========================
-        // BACKEND REJECTED
-        // =========================
-
-        if (!result.success) {
-
-          alert(
-            result.error ||
-            "Something went wrong."
-          );
-
-          return;
-        }
-
-
-        // =========================
-        // SUCCESS
-        // =========================
-
-        whitelistForm.reset();
-
-
-        if (successOverlay) {
-
-          successOverlay.classList.remove("hidden");
-
-        } else {
-
-          alert(
-            "Your Application to become HUMI's friend is in the Queue."
-          );
-
-        }
-
-
-      } catch (error) {
-
-        console.error(error);
-
-        alert(
-          "Unable to submit your application right now. Please try again."
-        );
-
-      } finally {
-
-        if (sendButton) {
-
-          sendButton.disabled = false;
-          sendButton.textContent = "SEND";
-
-        }
-
-      }
-
-    });
+    showPage("apply");
 
   }
 
+  else if (hash === "art") {
 
-  // =========================
-  // OPEN PAGE FROM HASH
-  // =========================
+    showPage("art");
 
-  const currentHash =
-    window.location.hash.replace("#", "");
+  }
 
-
-  if (
-    currentHash === "apply" ||
-    currentHash === "art"
-  ) {
-
-    showPage(currentHash);
-
-  } else {
+  else {
 
     showPage("home");
 
   }
 
-});
+}
+
+window.addEventListener(
+  "hashchange",
+  loadPageFromHash
+);
+
+
+loadPageFromHash();
