@@ -138,6 +138,10 @@ applyForm.addEventListener("submit", async (event) => {
       .value
       .trim();
 
+  console.log("WALLET READ BY SCRIPT:", wallet);
+  console.log("WALLET LENGTH:", wallet.length);
+  console.log("WALLET VALID:", /^0x[a-fA-F0-9]{40}$/.test(wallet));
+
   const quoteLink =
     document
       .getElementById("quoteLink")
