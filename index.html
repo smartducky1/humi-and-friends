@@ -3,172 +3,261 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>HUMI & FRIENDS</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<main id="app">
+  <!-- =========================
+       HOME
+  ========================== -->
 
-  <!-- ================= HOME ================= -->
-  <section id="home" class="page home-page">
+  <section id="home" class="page active">
 
-    <div class="hero-bg"></div>
+    <div class="hero-bg">
 
+      <div class="home-buttons">
 
+        <button id="applyBtn" class="main-btn">
+          Apply WL
+        </button>
 
-    <div class="home-buttons">
-      <button id="applyBtn" class="figma-button">Apply WL</button>
-      <button id="artBtn" class="figma-button">ART</button>
+        <button id="artBtn" class="main-btn">
+          ART
+        </button>
+
+      </div>
+
     </div>
 
   </section>
 
 
-  <!-- ================= APPLY WL ================= -->
-  <section id="apply" class="page inner-page hidden">
+  <!-- =========================
+       APPLY WHITELIST
+  ========================== -->
 
-    <div class="dark-bg"></div>
+  <section id="apply" class="page">
 
-    <button id="menuApply" class="hamburger" aria-label="Open menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+    <div class="dark-bg">
 
-    <div class="apply-title">
-      APPLY WHITELIST TO BECOME A FRIEND
-    </div>
+      <!-- Hamburger -->
 
-    <form id="applyForm" class="apply-card">
-
-      <div class="task-row">
-        <div class="task-label">
-          Follow X
-        </div>
-
-        <a
-          class="task-action"
-          href="https://x.com/humifriends"
-          target="_blank"
-          rel="noopener"
-        >
-          Follow
-        </a>
-      </div>
-
-
-      <div class="task-row">
-        <div class="task-label">
-          Like &amp; RT Pinned Post
-        </div>
-
-        <a
-          class="task-action"
-          href="https://x.com/humifriends"
-          target="_blank"
-          rel="noopener"
-        >
-          Do it
-        </a>
-      </div>
-
-
-      <div class="task-row quote-row">
-
-        <div class="task-label small-label">
-          <strong>QT pinned post</strong>
-          <span>“I will be friends with @humifriends”</span>
-        </div>
-
-        <input
-          id="quoteLink"
-          type="url"
-          placeholder="Drop link to post"
-        >
-
-      </div>
-
-
-      <div class="task-row">
-
-        <div class="task-label">
-          Tag 3 friends in pinned post
-        </div>
-
-        <input
-          id="tagLink"
-          type="url"
-          placeholder="Drop link to post"
-        >
-
-      </div>
-
-
-      <div class="task-row wallet-row">
-
-        <div class="task-label">
-          Submit Your EVM
-        </div>
-
-        <input
-          id="wallet"
-          type="text"
-          placeholder="0x........"
-          autocomplete="off"
-        >
-
-      </div>
-
-
-      <button
-        class="send-button"
-        type="submit"
-      >
-        SEND
+      <button class="hamburger" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
 
-    </form>
+
+      <!-- Page title -->
+
+      <div class="page-title">
+        APPLY WHITELIST TO BECOME A FRIEND
+      </div>
+
+
+      <!-- Whitelist form -->
+
+      <form id="whitelistForm" class="whitelist-form">
+
+        <!-- FOLLOW X -->
+
+        <div class="task-row">
+
+          <div class="task-name">
+            Follow X
+          </div>
+
+          <a
+            href="https://x.com/humifriends"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="task-link"
+          >
+            Do it
+          </a>
+
+        </div>
+
+
+        <!-- LIKE & RT -->
+
+        <div class="task-row">
+
+          <div class="task-name">
+            Like &amp; RT Pinned Post
+          </div>
+
+          <a
+            href="https://x.com/humifriends"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="task-link"
+          >
+            Do it
+          </a>
+
+        </div>
+
+
+        <!-- QUOTE POST -->
+
+        <div class="task-row task-input-row">
+
+          <div class="task-name">
+            QT pinned post
+          </div>
+
+          <div class="task-content">
+
+            <div class="task-instruction">
+              “I will be friends with @humifriends”
+            </div>
+
+            <input
+              type="text"
+              id="quoteLink"
+              name="quoteLink"
+              placeholder="Drop link to post"
+              autocomplete="off"
+            >
+
+          </div>
+
+        </div>
+
+
+        <!-- TAG 3 FRIENDS -->
+
+        <div class="task-row task-input-row">
+
+          <div class="task-name">
+            Tag 3 friends in pinned post
+          </div>
+
+          <div class="task-content">
+
+            <input
+              type="text"
+              id="tagLink"
+              name="tagLink"
+              placeholder="Drop link to post"
+              autocomplete="off"
+            >
+
+          </div>
+
+        </div>
+
+
+        <!-- EVM WALLET -->
+
+        <div class="task-row task-input-row wallet-row">
+
+          <div class="task-name">
+            Submit Your EVM
+          </div>
+
+          <div class="task-content">
+
+            <input
+              type="text"
+              id="wallet"
+              name="wallet"
+              placeholder="0x........"
+              autocomplete="off"
+              spellcheck="false"
+            >
+
+          </div>
+
+        </div>
+
+
+        <!-- SEND -->
+
+        <button
+          type="submit"
+          id="sendBtn"
+          class="send-btn"
+        >
+          SEND
+        </button>
+
+      </form>
+
+    </div>
 
   </section>
 
 
-  <!-- ================= ART ================= -->
-  <section id="art" class="page inner-page hidden">
+  <!-- =========================
+       ART
+  ========================== -->
 
-    <div class="dark-bg"></div>
+  <section id="art" class="page">
 
-    <button id="menuArt" class="hamburger" aria-label="Open menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+    <div class="dark-bg">
 
-    <div class="art-title">
-      ART
-    </div>
+      <!-- Hamburger -->
 
-    <div class="art-grid">
+      <button class="hamburger" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-      <div class="art-card">
-        <img src="assets/art-1.jpg" alt="Humi artwork 1">
+
+      <!-- ART TITLE -->
+
+      <div class="art-title">
+        ART
       </div>
 
-      <div class="art-card">
-        <img src="assets/art-2.jpg" alt="Humi artwork 2">
-      </div>
 
-      <div class="art-card">
-        <img src="assets/art-3.jpg" alt="Humi artwork 3">
-      </div>
+      <!-- ARTWORK -->
 
-      <div class="art-card">
-        <img src="assets/art-4.jpg" alt="Humi artwork 4">
-      </div>
+      <div class="art-grid">
 
-      <div class="art-card">
-        <img src="assets/art-5.jpg" alt="Humi artwork 5">
+        <div class="art-card">
+          <img
+            src="./assets/art-1.jpg"
+            alt="Humi artwork 1"
+          >
+        </div>
+
+        <div class="art-card">
+          <img
+            src="./assets/art-2.jpg"
+            alt="Humi artwork 2"
+          >
+        </div>
+
+        <div class="art-card">
+          <img
+            src="./assets/art-3.jpg"
+            alt="Humi artwork 3"
+          >
+        </div>
+
+        <div class="art-card">
+          <img
+            src="./assets/art-4.jpg"
+            alt="Humi artwork 4"
+          >
+        </div>
+
+        <div class="art-card">
+          <img
+            src="./assets/art-5.jpg"
+            alt="Humi artwork 5"
+          >
+        </div>
+
       </div>
 
     </div>
@@ -176,20 +265,23 @@
   </section>
 
 
-  <!-- ================= NAVIGATION ================= -->
+  <!-- =========================
+       NAVIGATION OVERLAY
+  ========================== -->
+
   <div id="navOverlay" class="nav-overlay hidden">
 
     <div class="nav-menu">
 
-      <button data-page="home">
+      <button id="navHome">
         HOME
       </button>
 
-      <button data-page="apply">
+      <button id="navApply">
         APPLY WL
       </button>
 
-      <button data-page="art">
+      <button id="navArt">
         ART
       </button>
 
@@ -198,7 +290,10 @@
   </div>
 
 
-  <!-- ================= SUCCESS POPUP ================= -->
+  <!-- =========================
+       SUCCESS POPUP
+  ========================== -->
+
   <div id="successOverlay" class="success-overlay hidden">
 
     <div class="success-popup">
@@ -215,9 +310,10 @@
 
   </div>
 
-</main>
 
-<script src="script.js"></script>
+  <!-- JAVASCRIPT -->
+
+  <script src="script.js"></script>
 
 </body>
 </html>
