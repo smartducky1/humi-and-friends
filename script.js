@@ -126,13 +126,28 @@ closeSuccess.addEventListener("click", () => {
 
 /* ================= APPLY FORM ================= */
 
-applyForm.addEventListener("submit", (event) => {
+const APPS_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbzAtDB_H8u2ngJVXNM1OO3U_oBjIuexYiEuljRBqsNZreZxwY0_XCVYiY-FuChgO9yJ/exec";
+
+applyForm.addEventListener("submit", async (event) => {
 
   event.preventDefault();
 
   const wallet =
     document
       .getElementById("wallet")
+      .value
+      .trim();
+
+  const quoteLink =
+    document
+      .getElementById("quoteLink")
+      .value
+      .trim();
+
+  const tagLink =
+    document
+      .getElementById("tagLink")
       .value
       .trim();
 
@@ -148,24 +163,56 @@ applyForm.addEventListener("submit", (event) => {
   }
 
 
-  /*
-    YOUR GOOGLE APPS SCRIPT SUBMISSION
-    CODE GOES HERE.
+  try {
 
-    DO NOT REMOVE THE CODE ABOVE.
+    const response = await fetch(APPS_SCRIPT_URL, {
 
-    After your backend successfully accepts
-    the application, run:
+      method: "POST",
 
-      successOverlay.classList.remove("hidden");
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
 
-    The popup text is already:
+      body: JSON.stringify({
+        quoteLink: quoteLink,
+        tagLink: tagLink,
+        wallet: wallet
+      })
 
-    "Your Application to become HUMI's friend is in the Queue."
-  */
+    });
 
 
-  successOverlay.classList.remove("hidden");
+    const result = await response.json();
+
+
+    /* BACKEND ERROR */
+
+    if (!result.success) {
+
+      alert(result.error || "Submission failed.");
+
+      return;
+
+    }
+
+
+    /* SUCCESS */
+
+    successOverlay.classList.remove("hidden");
+
+
+    /* Clear the form */
+
+    applyForm.reset();
+
+
+  } catch (error) {
+
+    console.error("Submission error:", error);
+
+    alert("Unable to submit your application. Please try again.");
+
+  }
 
 });
 
